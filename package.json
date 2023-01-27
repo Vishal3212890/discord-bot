@@ -1,0 +1,21 @@
+{
+  "name": "test-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "NODE_ENV=development node src/app.js",
+    "dev": "NODE_ENV=development nodemon src/app.js",
+    "prod": "NODE_ENV=production node src/app.js",
+    "deploy-commands:dev": "NODE_ENV=development node src/deploy-commands.js",
+    "deploy-commands:prod": "NODE_ENV=production node src/deploy-commands.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mongoose": "^6.9.0"
+  }
+}
