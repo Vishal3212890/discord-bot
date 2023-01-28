@@ -1,5 +1,5 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
-const commentAttackSettingsModal = require('../modals/comment-attack-setting.modal');
+const commentAttackSettingsModal = require('../modals/comment-attack-settings.modal');
 
 module.exports = {
   data: new ButtonBuilder()
@@ -7,6 +7,6 @@ module.exports = {
     .setLabel('Comment Attack Settings')
     .setStyle(ButtonStyle.Primary),
   async execute(interaction) {
-    await interaction.showModal(commentAttackSettingsModal);
+    await interaction.showModal(commentAttackSettingsModal.data);
   },
 };

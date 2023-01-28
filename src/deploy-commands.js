@@ -10,12 +10,12 @@ const fs = require('node:fs');
 const commands = [];
 // Grab all the command files from the commands directory you created earlier
 const commandFiles = fs
-  .readdirSync(__dirname + '/commands')
+  .readdirSync(__dirname + '/components/commands')
   .filter((file) => file.endsWith('.js'));
 
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+  const command = require(`./components/commands/${file}`);
   commands.push(command.data.toJSON());
 }
 

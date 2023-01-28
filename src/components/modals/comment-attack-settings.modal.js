@@ -9,7 +9,6 @@ const commentAttackSettingsModal = new ModalBuilder()
   .setCustomId('comment-attack-settings-modal')
   .setTitle('Comment Attack Configuration');
 
-// Create the text input components
 const tweetUrlInput = new TextInputBuilder()
   .setCustomId('tweet-url-input')
   .setLabel('Tweet URL')
@@ -25,15 +24,19 @@ const commentRewardInput = new TextInputBuilder()
   .setLabel('Comment Reward')
   .setStyle(TextInputStyle.Short);
 
-// An action row only holds one text input,
-// so you need one action row per text input.
 const actionsRows = [
   tweetUrlInput,
   requiredCommentTextInput,
   commentRewardInput,
 ].map((c) => new ActionRowBuilder().addComponents(c));
 
-// Add inputs to the modal
 commentAttackSettingsModal.addComponents(...actionsRows);
 
-module.exports = commentAttackSettingsModal;
+module.exports = {
+  data: commentAttackSettingsModal,
+  async execute(interaction) {
+    await interaction.reply(
+      `Hi ${interaction.user.username}, you have submitted the modal`
+    );
+  },
+};
