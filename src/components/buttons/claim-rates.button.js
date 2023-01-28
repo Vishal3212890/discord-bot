@@ -6,7 +6,9 @@ module.exports = {
     .setLabel('Check Claim Rates')
     .setStyle(ButtonStyle.Primary),
   async execute(interaction) {
-    await interaction.reply(`Hi ${interaction.user.username}, you have clicked`);
-    
+    await interaction.reply({
+      content: `Hi ${interaction.user.username}, you have clicked`,
+      ephemeral: true,
+    });
   },
 };

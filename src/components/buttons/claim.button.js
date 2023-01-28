@@ -6,6 +6,9 @@ module.exports = {
     .setLabel('Claim')
     .setStyle(ButtonStyle.Success),
   async execute(interaction) {
-    await interaction.reply({ content: 'hii', ephemeral: true });
+    await interaction.reply({
+      content: `Hi ${interaction.user.username}, you have clicked`,
+      ephemeral: true,
+    });
   },
 };
