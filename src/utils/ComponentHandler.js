@@ -19,7 +19,12 @@ class ComponentHandler {
       const button = require(filePath);
       // Set a new item in the Collection with the key as the button name and the value as the exported module
       if ('data' in button && 'execute' in button) {
-        this.client.buttons.set(button.data.data.custom_id, button);
+        const customId = button.data.data.custom_id;
+        if (this.client.buttons.has(customId)) {
+          console.log(`[WARNING] A button already exists with custom Id ${customId}`);
+        } else {
+          this.client.buttons.set(button.data.data.custom_id, button);
+        }
       } else {
         console.log(`[WARNING] The button at ${filePath} is missing a required "data" or "execute" property.`);
       }

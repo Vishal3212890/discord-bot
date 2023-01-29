@@ -3,13 +3,13 @@ const {
   PermissionFlagsBits,
   ActionRowBuilder,
 } = require('discord.js');
-const commentAttackSettingsButton = require('../buttons/comment-attack-settings.button');
-const commentAttackRaidSetupEmbed = require('../embeds/comment-attack-raid-setup.embed');
+const twitterActionRewardRaidSetupButton = require('../buttons/twitter-action-reward-raid-setup.button');
+const twitterActionRewardsRaidSetupEmbed = require('../embeds/twitter-action-rewards-raid-setup.embed');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('comment-attack')
-    .setDescription('Select a channel to post Comment Attack Raid embed')
+    .setName('twitter-action-reward')
+    .setDescription('Post Twitter Action Reward Raid')
     .addChannelOption((option) =>
       option
         .setName('channel')
@@ -20,9 +20,9 @@ module.exports = {
   async execute(interaction) {
     const channel = interaction.options._hoistedOptions[0].channel.id;
     const message = {
-      embeds: [commentAttackRaidSetupEmbed(channel)],
+      embeds: [twitterActionRewardsRaidSetupEmbed(channel)],
       components: [
-        new ActionRowBuilder().setComponents(commentAttackSettingsButton.data),
+        new ActionRowBuilder().setComponents(twitterActionRewardRaidSetupButton.data),
       ],
     };
     await interaction.reply(message);

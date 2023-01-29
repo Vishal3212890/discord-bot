@@ -1,5 +1,5 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
-const commentAttackSettingsModal = require('../modals/comment-attack-settings.modal');
+const twitterActionRewardRaidSetupModal = require('../modals/twitter-action-reward-raid-setup.modal');
 
 module.exports = {
   data: new ButtonBuilder()
@@ -7,6 +7,6 @@ module.exports = {
     .setLabel('Comment Attack Settings')
     .setStyle(ButtonStyle.Primary),
   async execute(interaction) {
-    await interaction.showModal(commentAttackSettingsModal.data);
+    await interaction.showModal(twitterActionRewardRaidSetupModal.data);
   },
 };
