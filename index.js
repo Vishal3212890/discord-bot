@@ -1,9 +1,12 @@
 require('./src/startup/env');
+require('./src/startup/db')();
+const User = require('./src/models/User');
 const twitterService = require('./src/services/twitter.service');
 
 async function main() {
-  const res = await twitterService.userRetweetedTweet('1564689884874706944', '1619130497048936448');
-  console.log(res)
+  const user = await User.findOne({ claimedBalance: 1}) ?? new User({claimedBalance: 1});
+  
+  console.log(user._id);
 }
 
 main();

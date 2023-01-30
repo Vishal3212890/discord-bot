@@ -10,4 +10,13 @@ exports.getUserByDiscordIdOrCreate = async (discordId) => {
 };
 
 exports.updateUserByDiscordId = (discordId, userDetails) =>
-  User.updateOne({ discordId }, userDetails);
+  User.updateOne({ discordId }, userDetails, { upsert: true });
+
+// async function main() {
+//   const user = await User.findOne({
+//     discordId: "1067033468699160636"});
+//   await user.increaseUnclaimedBalance(3);
+// }
+
+// main();
+

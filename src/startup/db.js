@@ -4,6 +4,11 @@ const { DB_URL } = process.env;
 
 module.exports = async function () {
   mongoose.set('strictQuery', false);
-  await mongoose.connect(DB_URL).then();
-  console.log('Connected to MongoDB...');
+  try {
+    await mongoose.connect(DB_URL);
+    console.log('Connected to MongoDB...');
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
 };

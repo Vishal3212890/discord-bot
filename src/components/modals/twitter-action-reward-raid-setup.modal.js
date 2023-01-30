@@ -36,10 +36,8 @@ const actionsRows = [
   rewardInput,
 ].map((c) => new ActionRowBuilder().addComponents(c));
 
-twitterActionRewardRaidSetupModal.addComponents(...actionsRows);
-
 module.exports = {
-  data: twitterActionRewardRaidSetupModal,
+  data: twitterActionRewardRaidSetupModal.addComponents(...actionsRows),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
     // Get the data entered
@@ -64,7 +62,7 @@ module.exports = {
 
     // Save raid details into db
     try {
-      await twitterActionRewardRaidService.createTwitterActionRewardRaid({
+      await twitterActionRewardRaidService.createRaid({
         discordMessageId: raidMessage.id,
         tweetUrl,
         requiredCommentText,
@@ -73,7 +71,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
       await raidMessage.delete();
-      await interaction.editReply('Error while posting raid');
+      await interaction.editReply('Error while saving raid into db');
       return;
     }
 

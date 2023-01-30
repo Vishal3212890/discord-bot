@@ -39,7 +39,6 @@ class ComponentHandler {
     this.client.commands = new Collection();
 
     const commandsPath = path.join(path.join(this.baseDir), dir);
-    console.log(this.baseDir, dir, commandsPath, "11111");
     const commandFiles = fs
       .readdirSync(commandsPath)
       .filter((file) => file.endsWith(".js"));

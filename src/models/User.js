@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
   },
   twitterId: {
     type: String,
-    default: null
+    default: null,
   },
   claimedBalance: {
     type: Number,
@@ -21,6 +21,11 @@ const userSchema = mongoose.Schema({
   },
 });
 
-const User = mongoose.model('user', userSchema);
+userSchema.methods.increaseUnclaimedBalance = function (amount) {
+  this.set({ unclaimedBalance: this.unclaimedBalance + amount });
+  return this.save();
+};
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

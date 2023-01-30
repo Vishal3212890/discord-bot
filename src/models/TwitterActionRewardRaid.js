@@ -1,10 +1,12 @@
-const { default: mongoose } = require('mongoose');
+const path = require('node:path');
+const url = require('node:url');
+const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
   discordMessageId: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   tweetUrl: {
     type: String,
@@ -20,6 +22,14 @@ const schema = mongoose.Schema({
   },
 });
 
-const TwitterActionRewardRaid = mongoose.model('TwitterActionRewardRaid', schema, 'twitter_action_reward_raid');
+schema.virtual('tweetId').get(function () {
+  return path.basename(url.parse(this.tweetUrl).pathname);
+});
+
+const TwitterActionRewardRaid = mongoose.model(
+  'TwitterActionRewardRaid',
+  schema,
+  'twitter_action_reward_raid'
+);
 
 module.exports = TwitterActionRewardRaid;
