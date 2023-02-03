@@ -4,6 +4,7 @@ const userSchema = mongoose.Schema({
   discordId: {
     type: String,
     required: true,
+    unique: true,
   },
   twitterId: {
     type: String,
@@ -19,6 +20,10 @@ const userSchema = mongoose.Schema({
     required: true,
     default: 0,
   },
+  twitterOAuthToken: String,
+  twitterOAuthTokenSecret: String,
+  twitterAccessToken: String,
+  twitterAccessTokenSecret: String,
 });
 
 userSchema.methods.increaseUnclaimedBalance = function (amount) {

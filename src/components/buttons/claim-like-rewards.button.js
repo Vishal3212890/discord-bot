@@ -28,10 +28,15 @@ module.exports = {
       twitterActionRewardRaid.tweetId
     );
 
-    if (userLikedTweet) {
-      await user.increaseUnclaimedBalance(twitterActionRewardRaid.reward);
-    }
- 
-    await interaction.editReply('Like points successfully claimed');
+    if (!userLikedTweet) return await interaction.editReply('Tweet Not Liked');
+
+    const result = await twitterActionRewardRaidService.claimLikeReward(
+      user._id,
+      twitterActionRewardRaid._id,
+      twitterActionRewardRaid.reward
+    );
+    
+    if (result) await interaction.editReply('Like reward successfully claimed');
+    else await interaction.editReply('Like reward already claimed');
   },
 };

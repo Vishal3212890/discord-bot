@@ -1,4 +1,10 @@
+const userService = require('../services/user.service');
+
 module.exports = async (interaction) => {
+  const discordId = interaction.user.id;
+  const user = await userService.getUserByDiscordId(discordId);
+  if (!user) await userService.createUser({ discordId });
+
   if (interaction.isChatInputCommand()) {
     const command = interaction.client.commands.get(interaction.commandName);
 
@@ -22,16 +28,28 @@ module.exports = async (interaction) => {
 
   if (interaction.isButton()) {
     const button = interaction.client.buttons.get(interaction.customId);
-    await button.execute(interaction);
+
+    if (!button) {
+      console.error(`No modal matching ${interaction.customId} was found.`);
+      return;
+    }
+
+    try {
+      await button.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({
+        content: 'Some error occurred!',
+        ephemeral: true,
+      });
+    }
   }
 
   if (interaction.isModalSubmit()) {
     const modal = interaction.client.modals.get(interaction.customId);
 
     if (!modal) {
-      console.error(
-        `No modal matching ${interaction.customId} was found.`
-      );
+      console.error(`No modal matching ${interaction.customId} was found.`);
       return;
     }
 
