@@ -1,18 +1,7 @@
 const { TwitterApi } = require('twitter-api-v2');
 const userService = require('./user.service');
 
-const { TWITTER_API_KEY, TWITTER_API_KEY_SECRET, TWITTER_BEARER_TOKEN } =
-  process.env;
-
-const twitterClient = new TwitterApi(TWITTER_BEARER_TOKEN);
-
-exports.getUserByUsername = (username) =>
-  twitterClient.v2.userByUsername(username);
-
-exports.getTwitterIdByUsername = async (username) => {
-  const user = await this.getUserByUsername(username);
-  return user.data.id;
-};
+const { TWITTER_API_KEY, TWITTER_API_KEY_SECRET } = process.env;
 
 exports.generateAuthUrl = async (discordId) => {
   const client = new TwitterApi({
@@ -56,24 +45,56 @@ exports.submitPin = async (discordId, pin) => {
   });
 };
 
-exports.userLikedTweet = async (userTwitterId, tweetId) => {
-  const usersPaginated = await twitterClient.v2.tweetLikedBy(tweetId, {
+exports.userLikedTweet = async (twitterId, tweetId) => {
+  const client = await this.getUserClient(twitterId);
+  const usersPaginated = await client.v2.tweetLikedBy(tweetId, {
     asPaginator: true,
   });
 
   for await (const user of usersPaginated)
-    if (user.id === userTwitterId) return true;
+    if (user.id === twitterId) return true;
 
   return false;
 };
 
-exports.userRetweetedTweet = async (userTwitterId, tweetId) => {
-  const usersPaginated = await twitterClient.v2.tweetRetweetedBy(tweetId, {
+exports.userRetweetedTweet = async (twitterId, tweetId) => {
+  const client = await this.getUserClient(twitterId);
+  const usersPaginated = await client.v2.tweetRetweetedBy(tweetId, {
     asPaginator: true,
   });
 
   for await (const user of usersPaginated)
-    if (user.id === userTwitterId) return true;
+    if (user.id === twitterId) return true;
 
   return false;
+};
+
+exports.userCommentedOnTweet = async (twitterId, tweetId, commentText) => {
+  const client = await this.getUserClient(twitterId);
+  const tweetsPaginated = await client.v2.search(
+    `in_reply_to_tweet_id:${tweetId}`,
+    {
+      'tweet.fields': 'author_id',
+    }
+  );
+
+  for await (const tweet of tweetsPaginated) {
+    if (tweet.author_id === twitterId && tweet.text.includes(commentText))
+      return true;
+  }
+
+  return false;
+};
+
+exports.getUserClient = async (twitterId) => {
+  const user = await userService.getUserByTwitterId(twitterId);
+
+  const userClient = new TwitterApi({
+    appKey: TWITTER_API_KEY,
+    appSecret: TWITTER_API_KEY_SECRET,
+    accessToken: user.twitterAccessToken,
+    accessSecret: user.twitterAccessTokenSecret,
+  });
+
+  return userClient;
 };

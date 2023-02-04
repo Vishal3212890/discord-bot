@@ -1,5 +1,3 @@
-const footerEmbed = require('./footer.embed');
-
 module.exports = (tweetUrl, requiredCommentText, commentReward) => {
   return {
     color: 0x1547d1,
@@ -18,6 +16,5 @@ ${tweetUrl}
 \`\`\`${requiredCommentText}\`\`\`
 **Reward**
 ${commentReward}`,
-    footer: footerEmbed,
   };
 };

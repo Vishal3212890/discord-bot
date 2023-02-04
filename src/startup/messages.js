@@ -1,23 +1,18 @@
-const { ActionRowBuilder } = require('discord.js');
-const balanceButton = require('../components/buttons/balance.button');
-const claimRatesButton = require('../components/buttons/claim-rates.button');
-const claimButton = require('../components/buttons/claim.button');
-const theBankEmbed = require('../components/embeds/the-bank.embed');
+const manualQuestAdminPanelMessage = require('../messages/manual-quest-admin-panel.message');
+const theBankMessage = require('../messages/the-bank.message');
 
-const { DISCORD_THE_BANK_CHANNEL_ID } = process.env;
+const { DISCORD_THE_BANK_CHANNEL_ID, DISCORD_QUEST_CHANNEL_ID } = process.env;
 
 module.exports = async function (client) {
-  const theBankMessage = {
-    embeds: [theBankEmbed],
-    components: [
-      new ActionRowBuilder().setComponents(
-        claimRatesButton.data,
-        balanceButton.data,
-        claimButton.data
-      ),
-    ],
-  };
-  const theBankChannel = client.channels.cache.get(DISCORD_THE_BANK_CHANNEL_ID);
-  const theBankChannelMessages = await theBankChannel.messages.fetch();
-  if (theBankChannelMessages.size === 0) theBankChannel.send(theBankMessage);
+  const map = {
+    [DISCORD_THE_BANK_CHANNEL_ID]: theBankMessage,
+    [DISCORD_QUEST_CHANNEL_ID]: manualQuestAdminPanelMessage
+  }
+
+  Object.entries(map).forEach(async (entry) => {
+    const [channelId, message] = entry;
+    const channel = client.channels.cache.get(channelId);
+    const messages = await channel.messages.fetch();
+    if (messages.size === 0) channel.send(message);
+  });
 };

@@ -29,7 +29,7 @@ schema.virtual('tweetId').get(function () {
 const TwitterActionRewardRaid = mongoose.model(
   'TwitterActionRewardRaid',
   schema,
-  'twitter_action_reward_raid'
+  'twitter_action_reward_raids'
 );
 
 module.exports = TwitterActionRewardRaid;

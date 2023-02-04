@@ -28,7 +28,7 @@ const schema = mongoose.Schema({
 const UserTwitterActionRewardRaid = mongoose.model(
   'UserTwitterActionRewardRaid',
   schema,
-  'user_twitter_action_reward_raid'
+  'users_twitter_action_reward_raids'
 );
 
 module.exports = UserTwitterActionRewardRaid;
