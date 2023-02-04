@@ -6,8 +6,8 @@ const twitterUtil = require('../utils/twitter.util');
 
 module.exports = {
   data: new ButtonBuilder()
-    .setCustomId('claim-retweet-rewards')
-    .setLabel('Claim Retweet Rewards')
+    .setCustomId("claim-retweet-rewards")
+    .setLabel("Claim Retweet Rewards")
     .setStyle(ButtonStyle.Danger),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
@@ -35,8 +35,9 @@ module.exports = {
       twitterActionRewardRaid._id,
       twitterActionRewardRaid.reward
     );
-    
-    if (result) await interaction.editReply('Retweet reward successfully claimed');
-    else await interaction.editReply('Retweet reward already claimed');
+
+    if (result)
+      await interaction.editReply("Retweet reward successfully claimed");
+    else await interaction.editReply("Retweet reward already claimed");
   },
 };
