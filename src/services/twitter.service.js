@@ -31,7 +31,7 @@ exports.generateAuthUrl = async (discordId) => {
   return url;
 };
 
-exports.verifyUser = async (discordId, pin) => {
+exports.submitPin = async (discordId, pin) => {
   const user = await userService.getUserByDiscordId(discordId);
 
   const client = new TwitterApi({
@@ -44,12 +44,15 @@ exports.verifyUser = async (discordId, pin) => {
   const {
     client: loggedClient,
     accessToken: twitterAccessToken,
-    accessSecret: twitterAccessSecret,
+    accessSecret: twitterAccessTokenSecret,
   } = await client.login(pin);
 
+  const twitterUser = await loggedClient.v2.me();
+
   await userService.updateUserByDiscordId(discordId, {
+    twitterId: twitterUser.data.id,
     twitterAccessToken,
-    twitterAccessSecret,
+    twitterAccessTokenSecret,
   });
 };
 

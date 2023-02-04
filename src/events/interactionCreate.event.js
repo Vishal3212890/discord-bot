@@ -37,6 +37,7 @@ module.exports = async (interaction) => {
     try {
       await button.execute(interaction);
     } catch (error) {
+      console.log(error)
       console.error(error);
       await interaction.reply({
         content: 'Some error occurred!',
