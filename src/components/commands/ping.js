@@ -1,13 +1,19 @@
-const { SlashCommandBuilder, ActionRowBuilder } = require("discord.js");
-const twitterService = require("../../services/twitter.service");
-const submitPinButton = require("../buttons/submit-pin.button");
-const verifyTwitterAccountEmbed = require("../embeds/verify-twitter-account.embed");
-const DiscordService = require("../../services/discord.service");
+const { SlashCommandBuilder, ActionRowBuilder } = require('discord.js');
+const twitterService = require('../../services/twitter.service');
+const submitPinButton = require('../buttons/submit-pin.button');
+const verifyTwitterAccountEmbed = require('../embeds/verify-twitter-account.embed');
+const DiscordService = require('../../services/discord.service');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Replies with Pong!"),
+    .setName('ping')
+    .setDescription('Replies with Pong!')
+    .addAttachmentOption((option) =>
+      option
+        .setName('image')
+        .setDescription('The Image Evidence')
+        .setRequired(true)
+    ),
   async execute(interaction) {
     await interaction.Reply('Pong');
     // const discordId = interaction.user.id;

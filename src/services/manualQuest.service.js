@@ -5,9 +5,11 @@ exports.createManualQuest = (questDetails) =>
 
 exports.getManualQuestById = (id) => ManualQuest.findById(id);
 
+exports.questExists = (filter) => ManualQuest.exists(filter);
+
 exports.getAllManualQuests = () => ManualQuest.find();
 
 exports.updateManualQuest = (id, questDetails) =>
-  ManualQuest.updateOne(id, questDetails);
+  ManualQuest.findByIdAndUpdate(id, questDetails);
 
-exports.deleteManualQuest = (id) => ManualQuest.deleteOne(id);
+exports.deleteManualQuest = (id) => ManualQuest.findByIdAndDelete(id);

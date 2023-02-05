@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose } = require('mongoose');
 
 const schema = mongoose.Schema({
   name: {
@@ -12,10 +12,6 @@ const schema = mongoose.Schema({
   reward: {
     type: Number,
     required: true,
-  },
-  limit: {
-    type: Number,
-    default: null,
   },
 });
 

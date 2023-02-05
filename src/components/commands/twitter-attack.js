@@ -8,7 +8,7 @@ const twitterActionRewardsRaidSetupEmbed = require('../embeds/twitter-action-rew
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('twitter-action-reward')
+    .setName('twitter-attack')
     .setDescription('Post Twitter Action Reward Raid')
     .addChannelOption((option) =>
       option

@@ -25,14 +25,7 @@ const rewardInput = new TextInputBuilder()
   .setLabel('Reward')
   .setStyle(TextInputStyle.Short);
 
-const limitInput = new TextInputBuilder()
-  .setCustomId('limit-input')
-  .setLabel('Limit')
-  .setRequired(false)
-  .setPlaceholder('Limit is Optional')
-  .setStyle(TextInputStyle.Short);
-
-const actionsRows = [nameInput, descriptionInput, rewardInput, limitInput].map(
+const actionsRows = [nameInput, descriptionInput, rewardInput].map(
   (c) => new ActionRowBuilder().addComponents(c)
 );
 
@@ -45,9 +38,8 @@ module.exports = {
 	  const name = interaction.fields.getTextInputValue(nameInput.data.custom_id);
 	  const description = interaction.fields.getTextInputValue(descriptionInput.data.custom_id);
     const reward = interaction.fields.getTextInputValue(rewardInput.data.custom_id);
-    const limit = interaction.fields.getTextInputValue(limitInput.data.custom_id);
 
-    await manualQuestService.createManualQuest({ name, description, reward, limit });
+    await manualQuestService.createManualQuest({ name, description, reward });
 
     await interaction.editReply('Manual Quest Created Successfully');
   },

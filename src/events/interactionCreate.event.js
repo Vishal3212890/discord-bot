@@ -47,7 +47,10 @@ module.exports = async (interaction) => {
   }
 
   if (interaction.isModalSubmit()) {
-    const modal = interaction.client.modals.get(interaction.customId);
+    const { modals } = interaction.client;
+    const customId = Array.from(modals.keys()).find(k => new RegExp(k).test(interaction.customId));
+    
+    const modal = modals.get(customId);
 
     if (!modal) {
       console.error(`No modal matching ${interaction.customId} was found.`);
@@ -60,6 +63,20 @@ module.exports = async (interaction) => {
       console.error(error);
       await interaction.reply({
         content: 'There was an error while submitting this form!',
+        ephemeral: true,
+      });
+    }
+  }
+
+  if (interaction.isStringSelectMenu()) {
+    const selectMenu = interaction.client.selectMenus.get(interaction.customId);
+
+    try {
+      await selectMenu.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({
+        content: 'There was an error processing the interaction!',
         ephemeral: true,
       });
     }

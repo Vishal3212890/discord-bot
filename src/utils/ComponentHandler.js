@@ -78,6 +78,28 @@ class ComponentHandler {
       }
     }
   }
+
+  addSelectMenus(dir = "selectMenus") {
+    this.client.selectMenus = new Collection();
+
+    const selectMenusPath = path.join(path.join(this.baseDir), dir);
+    const selectMenuFiles = fs
+      .readdirSync(selectMenusPath)
+      .filter((file) => file.endsWith(".js"));
+
+    for (const file of selectMenuFiles) {
+      const filePath = path.join(selectMenusPath, file);
+      const selectMenu = require(filePath);
+      // Set a new item in the Collection with the key as the selectMenu name and the value as the exported module
+      if ("data" in selectMenu && "execute" in selectMenu) {
+        this.client.selectMenus.set(selectMenu.data.data.custom_id, selectMenu);
+      } else {
+        console.log(
+          `[WARNING] The selectMenu at ${filePath} is missing a required "data" or "execute" property.`
+        );
+      }
+    }
+  }
 }
 
 module.exports = ComponentHandler;

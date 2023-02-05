@@ -15,6 +15,7 @@ const componentHandler = new ComponentHandler(client);
 componentHandler.addButtons();
 componentHandler.addCommands();
 componentHandler.addModals();
+componentHandler.addSelectMenus();
 
 // Register Events
 client.once(Events.ClientReady, clientReadyEvent);
