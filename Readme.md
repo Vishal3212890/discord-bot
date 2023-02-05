@@ -1,3 +1,3 @@
-Add bot to your server
+Add bot to Server
 
-https://discord.com/api/oauth2/authorize?client_id=1068037944067231764&permissions=0&scope=bot%20applications.commands
+https://discord.com/api/oauth2/authorize?client_id=&permissions=0&scope=bot%20applications.commands
