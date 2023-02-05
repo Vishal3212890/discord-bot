@@ -1,5 +1,5 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const manualQuestService = require('../../services/manualQuest.service');
+const questService = require('../../services/quest.service');
 const editManualQuestModal = require('../modals/edit-manual-quest.modal');
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
   async execute(interaction) {
     const questId = interaction.values[0];
 
-    const quest = await manualQuestService.getManualQuestById(questId);
+    const quest = await questService.getQuestById(questId);
     if (!quest) return interaction.Reply('Quest Not Found');
 
     const { _id, name, description, reward } = quest;

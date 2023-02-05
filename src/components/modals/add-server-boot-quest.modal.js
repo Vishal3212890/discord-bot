@@ -12,8 +12,8 @@ const actionsRows = [nameInput, descriptionInput, rewardInput].map((c) =>
 
 module.exports = {
   data: new ModalBuilder()
-    .setCustomId('add-manual-quest')
-    .setTitle('Add Manual Quest')
+    .setCustomId('add-server-boost-quest')
+    .setTitle('Add Automated Quest')
     .addComponents(...actionsRows),
 
   async execute(interaction) {

@@ -1,6 +1,6 @@
 module.exports = {
   color: 0x1547d1,
-  title: 'Manual Quest Admin Panel',
+  title: 'Quest Admin Panel',
   description: `Details of a Quest:
 
 1. \`Name\`: Name of the Quest.

@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, inlineCode } = require('discord.js');
 const questApplicationEmbed = require('../embeds/quest-application.embed');
+const questService = require('../../services/quest.service');
 
 const { DISCORD_QUEST_APPLICATIONS_CHANNEL_ID } = process.env;
-const manualQuestService = require('../../services/manualQuest.service');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,17 +27,11 @@ module.exports = {
     const questName = interaction.options._hoistedOptions[0].value.trim();
     const imageUrl = interaction.options._hoistedOptions[1].attachment.url;
 
-    const questExists = await manualQuestService.questExists({
-      name: questName,
-    });
+    const questExists = await questService.questExists({ name: questName });
     if (!questExists)
-      return await interaction.editReply(
-        `Quest ${inlineCode(questName)} Not Found`
-      );
+      return await interaction.editReply(`Quest ${inlineCode(questName)} Not Found`);
 
-    const questApplicationChannel = interaction.client.channels.cache.get(
-      DISCORD_QUEST_APPLICATIONS_CHANNEL_ID
-    );
+    const questApplicationChannel = interaction.client.channels.cache.get(DISCORD_QUEST_APPLICATIONS_CHANNEL_ID);
 
     await questApplicationChannel.send({
       embeds: [questApplicationEmbed(discordId, questName, imageUrl)],

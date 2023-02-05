@@ -1,61 +1,51 @@
+const { ModalBuilder, ActionRowBuilder } = require('discord.js');
 const {
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  ActionRowBuilder,
-} = require('discord.js');
-const manualQuestService = require('../../services/manualQuest.service');
-
-const nameInput = new TextInputBuilder()
-  .setCustomId('name-input')
-  .setLabel('Name')
-  .setStyle(TextInputStyle.Short);
-
-const descriptionInput = new TextInputBuilder()
-  .setCustomId('description-input')
-  .setLabel('Description')
-  .setStyle(TextInputStyle.Paragraph);
-
-const rewardInput = new TextInputBuilder()
-  .setCustomId('reward-input')
-  .setLabel('Reward')
-  .setStyle(TextInputStyle.Short);
+  nameInput,
+  descriptionInput,
+  rewardInput,
+} = require('../inputs/quest.inputs');
+const questService = require('../../services/quest.service');
 
 module.exports = {
   data: new ModalBuilder()
-    .setCustomId('edit-manual-quest-modal-*')
+    .setCustomId('edit-manual-quest-*')
     .setTitle('Edit Manual Quest'),
 
   render(id, name, description, reward) {
     const actionsRows = [
       nameInput.setValue(name),
       descriptionInput.setValue(description),
-      rewardInput.setValue(reward)
+      rewardInput.setValue(reward),
     ].map((c) => new ActionRowBuilder().addComponents(c));
 
-    const customId = this.data.data.custom_id;
-    const newCustomId = customId.replace('*', id.toString());
+    const customId = this.data.data.custom_id.replace('*', id.toString());
 
-    return this.data.setCustomId(newCustomId).addComponents(...actionsRows);
+    return this.data.setCustomId(customId).addComponents(...actionsRows);
   },
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
 
     // extract quest id
-    const questId = interaction.customId.substring('edit-manual-quest-modal-'.length);
-    
+    const questId = interaction.customId.substring(
+      'edit-manual-quest-'.length
+    );
+
     // Get the data entered
     const name = interaction.fields.getTextInputValue(nameInput.data.custom_id);
-    const description = interaction.fields.getTextInputValue(descriptionInput.data.custom_id);
-    const reward = interaction.fields.getTextInputValue(rewardInput.data.custom_id);
+    const description = interaction.fields.getTextInputValue(
+      descriptionInput.data.custom_id
+    );
+    const reward = interaction.fields.getTextInputValue(
+      rewardInput.data.custom_id
+    );
 
-    await manualQuestService.updateManualQuest(questId, {
+    await questService.updateQuest(questId, {
       name,
       description,
-      reward
+      reward,
     });
 
-    await interaction.editReply('Manual Quest Edited');
+    await interaction.editReply('Manual Quest Updated');
   },
 };

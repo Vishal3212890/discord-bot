@@ -1,5 +1,5 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
-const manualQuestService = require('../../services/manualQuest.service');
+const questService = require('../../services/quest.service');
 const deleteQuestSelectMenu = require('../selectMenus/delete-quest.selectMenu');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
 
-    const quests = await manualQuestService.getAllManualQuests();
+    const quests = await questService.getAllQuests();
 
     if (quests.length === 0) await interaction.editReply('No available quests');
 

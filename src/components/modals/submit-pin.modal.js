@@ -6,10 +6,6 @@ const {
 } = require('discord.js');
 const twitterService = require('../../services/twitter.service');
 
-const submitPinModal = new ModalBuilder()
-  .setCustomId('submit-pin')
-  .setTitle('Submit PIN');
-
 const pinInput = new TextInputBuilder()
   .setCustomId('pin-input')
   .setLabel('Enter the pin below')
@@ -20,7 +16,10 @@ const actionsRows = [pinInput].map((c) =>
 );
 
 module.exports = {
-  data: submitPinModal.addComponents(...actionsRows),
+  data: new ModalBuilder()
+    .setCustomId('submit-pin')
+    .setTitle('Submit PIN')
+    .addComponents(...actionsRows),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
 

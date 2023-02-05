@@ -2,10 +2,10 @@ const { ActionRowBuilder } = require("discord.js");
 const addQuestButton = require("../buttons/add-quest.button");
 const deleteQuestButton = require("../buttons/delete-quest.button");
 const editQuestButton = require("../buttons/edit-quest.button");
-const manualQuestsAdminPanelEmbed = require("../embeds/manual-quests-admin-panel.embed");
+const questsAdminPanelEmbed = require("../embeds/quest-admin-panel.embed");
 
 module.exports = {
-  embeds: [manualQuestsAdminPanelEmbed],
+  embeds: [questsAdminPanelEmbed],
   components: [
     new ActionRowBuilder().setComponents(
       addQuestButton.data,

@@ -3,17 +3,18 @@ const questService = require('../../services/quest.service');
 const {
   nameInput,
   descriptionInput,
+  numberOfInvitesInput,
   rewardInput,
 } = require('../inputs/quest.inputs');
 
-const actionsRows = [nameInput, descriptionInput, rewardInput].map((c) =>
+const actionsRows = [nameInput, descriptionInput, numberOfInvitesInput, rewardInput].map((c) =>
   new ActionRowBuilder().addComponents(c)
 );
 
 module.exports = {
   data: new ModalBuilder()
-    .setCustomId('add-manual-quest')
-    .setTitle('Add Manual Quest')
+    .setCustomId('add-invite-n-people-quest')
+    .setTitle('Add Automated Quest')
     .addComponents(...actionsRows),
 
   async execute(interaction) {
@@ -22,17 +23,19 @@ module.exports = {
     // Get the data entered
     const name = interaction.fields.getTextInputValue(nameInput.data.custom_id);
     const description = interaction.fields.getTextInputValue(descriptionInput.data.custom_id);
+    const numberOfInvites = interaction.fields.getTextInputValue(numberOfInvitesInput.data.custom_id);
     const reward = interaction.fields.getTextInputValue(rewardInput.data.custom_id);
 
     const questDetails = {
       name,
       description,
       reward,
-      type: 'manual',
+      numberOfInvites,
+      type: 'automated',
     };
 
     await questService.createQuest(questDetails);
 
-    await interaction.editReply('Manual Quest Created');
+    await interaction.editReply('Automated Quest Created');
   },
 };

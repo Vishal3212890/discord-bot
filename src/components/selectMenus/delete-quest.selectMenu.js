@@ -1,5 +1,5 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const manualQuestService = require('../../services/manualQuest.service');
+const questService = require('../../services/quest.service');
 
 module.exports = {
   data: new StringSelectMenuBuilder()
@@ -15,7 +15,7 @@ module.exports = {
 
     const questId = interaction.values[0];
 
-    await manualQuestService.deleteManualQuest(questId);
+    await questService.deleteQuest(questId);
 
     await interaction.editReply('Quest Deleted');
   },

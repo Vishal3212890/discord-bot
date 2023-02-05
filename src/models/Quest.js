@@ -4,6 +4,7 @@ const schema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   description: {
     type: String,
@@ -13,8 +14,15 @@ const schema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  type: {
+    type: String,
+    enum: ['manual', 'automated'],
+    required: true,
+  },
+  numberOfMessages: Number,
+  numberOfInvites: Number,
 });
 
-const ManualQuest = mongoose.model('ManualQuest', schema, 'manual_quests');
+const Quest = mongoose.model('Quest', schema);
 
-module.exports = ManualQuest;
+module.exports = Quest;

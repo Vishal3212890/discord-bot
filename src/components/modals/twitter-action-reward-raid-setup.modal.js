@@ -12,7 +12,7 @@ const twitterActionRewardRaidEmbed = require('../embeds/twitter-action-reward-ra
 const twitterActionRewardRaidService = require('../../services/twitterActionRewardRaid.service');
 
 const twitterActionRewardRaidSetupModal = new ModalBuilder()
-  .setCustomId('twitter-actions-rewards-raid-setup-modal')
+  .setCustomId('twitter-actions-rewards-raid-setup')
   .setTitle('Twitter Actions Rewards Setup');
 
 const tweetUrlInput = new TextInputBuilder()
@@ -58,6 +58,7 @@ module.exports = {
         claimRetweetRewardsButton.data
       ),
     ];
+    
     const raidMessage = await mentionedChannel.send({ embeds, components });
 
     // Save raid details into db
