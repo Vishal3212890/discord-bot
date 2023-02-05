@@ -19,6 +19,6 @@ const schema = mongoose.Schema({
   },
 });
 
-const ManualQuest = mongoose.model('ManualQuest', schema, 'manual-quests');
+const ManualQuest = mongoose.model('ManualQuest', schema, 'manual_quests');
 
 module.exports = ManualQuest;

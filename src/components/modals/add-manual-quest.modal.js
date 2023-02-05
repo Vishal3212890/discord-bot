@@ -4,6 +4,7 @@ const {
   TextInputStyle,
   ActionRowBuilder,
 } = require('discord.js');
+const manualQuestService = require('../../services/manualQuest.service');
 
 const addManualQuestModal = new ModalBuilder()
   .setCustomId('add-manual-quest-modal')
@@ -28,7 +29,7 @@ const limitInput = new TextInputBuilder()
   .setCustomId('limit-input')
   .setLabel('Limit')
   .setRequired(false)
-  .setPlaceholder('Limit is optional')
+  .setPlaceholder('Limit is Optional')
   .setStyle(TextInputStyle.Short);
 
 const actionsRows = [nameInput, descriptionInput, rewardInput, limitInput].map(
@@ -39,6 +40,15 @@ module.exports = {
   data: addManualQuestModal.addComponents(...actionsRows),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
-    await interaction.editReply(`Test`);
+
+    // Get the data entered
+	  const name = interaction.fields.getTextInputValue(nameInput.data.custom_id);
+	  const description = interaction.fields.getTextInputValue(descriptionInput.data.custom_id);
+    const reward = interaction.fields.getTextInputValue(rewardInput.data.custom_id);
+    const limit = interaction.fields.getTextInputValue(limitInput.data.custom_id);
+
+    await manualQuestService.createManualQuest({ name, description, reward, limit });
+
+    await interaction.editReply('Manual Quest Created Successfully');
   },
 };

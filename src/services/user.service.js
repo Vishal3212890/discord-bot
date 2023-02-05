@@ -13,11 +13,3 @@ exports.updateUserByDiscordId = (discordId, userDetails) =>
 
 exports.increaseUnclaimedBalance = (id, amount) =>
   User.findByIdAndUpdate(id, { $inc: { unclaimedBalance: amount } });
-
-// async function main() {
-//   const user = await User.findOne({
-//     discordId: "1067033468699160636"});
-//   await user.increaseUnclaimedBalance(3);
-// }
-
-// main();
