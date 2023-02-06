@@ -31,7 +31,7 @@ module.exports = {
       description,
       reward,
       numberOfInvites,
-      type: 'automated',
+      type: 'invite_n_people',
     };
 
     await questService.createQuest(questDetails);

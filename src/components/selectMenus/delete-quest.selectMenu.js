@@ -7,7 +7,7 @@ module.exports = {
     .setPlaceholder('Select a Quest to Delete...'),
 
   render(options) {
-    return new ActionRowBuilder().addComponents(this.data.addOptions(options));
+    return new ActionRowBuilder().addComponents(this.data.setOptions(options));
   },
 
   async execute(interaction) {

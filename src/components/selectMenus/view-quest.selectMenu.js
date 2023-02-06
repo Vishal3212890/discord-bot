@@ -11,7 +11,7 @@ module.exports = {
     .setPlaceholder('Select a Quest to View...'),
 
   render(options) {
-    return new ActionRowBuilder().addComponents(this.data.addOptions(options));
+    return new ActionRowBuilder().addComponents(this.data.setOptions(options));
   },
 
   async execute(interaction) {
@@ -21,7 +21,7 @@ module.exports = {
 
     const { name, description, reward, type } = await questService.getQuestById(questId);
 
-    if (type === 'manual') {
+    if (type === 'manual_quest') {
       await interaction.editReply({
         embeds: [manualQuestDetailsEmbed(name, description, reward)],
       });
@@ -29,7 +29,7 @@ module.exports = {
       await interaction.editReply({
         embeds: [automatedQuestDetailsEmbed(name, description, reward)],
         components: [
-          new ActionRowBuilder().setComponents(claimRewardButton.data),
+          new ActionRowBuilder().setComponents(claimRewardButton.render(questId)),
         ],
       });
     }

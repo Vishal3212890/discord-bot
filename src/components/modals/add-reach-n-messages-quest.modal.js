@@ -31,7 +31,7 @@ module.exports = {
       description,
       reward,
       numberOfMessages,
-      type: 'automated',
+      type: 'reach_n_messages',
     };
 
     await questService.createQuest(questDetails);

@@ -7,12 +7,12 @@ const {
 const questService = require('../../services/quest.service');
 const { getInputValues } = require('../utils/input.util');
 
-const customIdPrefix = 'edit-manual-quest-';
+const customIdPrefix = 'edit-server-boot-quest';
 
 module.exports = {
   data: new ModalBuilder()
     .setCustomId(customIdPrefix + '*')
-    .setTitle('Edit Manual Quest'),
+    .setTitle('Edit Automated Quest'),
 
   render({ _id: id, name, description, reward }) {
     const actionsRows = [
@@ -46,6 +46,6 @@ module.exports = {
       reward,
     });
 
-    await interaction.editReply('Manual Quest Updated');
+    await interaction.editReply('Automated Quest Updated');
   },
 };

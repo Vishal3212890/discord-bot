@@ -2,22 +2,24 @@ const { ModalBuilder, ActionRowBuilder } = require('discord.js');
 const {
   nameInput,
   descriptionInput,
+  numberOfMessagesInput,
   rewardInput,
 } = require('../inputs/quest.inputs');
 const questService = require('../../services/quest.service');
 const { getInputValues } = require('../utils/input.util');
 
-const customIdPrefix = 'edit-manual-quest-';
+const customIdPrefix = 'edit-reach-n-messages-quest-';
 
 module.exports = {
   data: new ModalBuilder()
     .setCustomId(customIdPrefix + '*')
-    .setTitle('Edit Manual Quest'),
+    .setTitle('Edit Automated Quest'),
 
-  render({ _id: id, name, description, reward }) {
+  render({ _id: id, name, description, numberOfMessages, reward }) {
     const actionsRows = [
       nameInput.setValue(name),
       descriptionInput.setValue(description),
+      numberOfMessagesInput.setValue(numberOfMessages.toString()),
       rewardInput.setValue(reward.toString()),
     ].map((c) => new ActionRowBuilder().addComponents(c));
 
@@ -33,19 +35,21 @@ module.exports = {
     const questId = interaction.customId.substring(customIdPrefix.length);
 
     // Get the data entered
-    const [name, description, reward] = getInputValues(
+    const [name, description, numberOfMessages, reward] = getInputValues(
       interaction,
       nameInput,
       descriptionInput,
+      numberOfMessagesInput,
       rewardInput
     );
 
     await questService.updateQuest(questId, {
       name,
       description,
+      numberOfMessages,
       reward,
     });
 
-    await interaction.editReply('Manual Quest Updated');
+    await interaction.editReply('Automated Quest Updated');
   },
 };

@@ -11,13 +11,13 @@ module.exports = {
     .setPlaceholder('Select a Quest to Create...'),
 
   render(options) {
-    return new ActionRowBuilder().addComponents(this.data.addOptions(options));
+    return new ActionRowBuilder().addComponents(this.data.setOptions(options));
   },
 
   async execute(interaction) {
-    const questId = interaction.values[0];
+    const questType = interaction.values[0];
 
-    switch (questId) {
+    switch (questType) {
       case 'reach_n_messages':
         await interaction.showModal(addReachNMessagesQuestModal.data);
         break;
@@ -34,7 +34,7 @@ module.exports = {
         await interaction.showModal(addManualQuestModal.data);
         break;
       default:
-        await interaction.reply('Quest Type Not Supported');
+        await interaction.reply('Quest Type Not Supported', { ephemeral: true });
     }
   },
 };

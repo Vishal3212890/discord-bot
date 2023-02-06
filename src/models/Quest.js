@@ -16,7 +16,13 @@ const schema = mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['manual', 'automated'],
+    enum: [
+      'reach_n_messages',
+      'invite_n_people',
+      'add_reactions_in_announcement',
+      'boost_the_server',
+      'manual_quest',
+    ],
     required: true,
   },
   numberOfMessages: Number,

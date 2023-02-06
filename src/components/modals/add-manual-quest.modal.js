@@ -28,7 +28,7 @@ module.exports = {
       name,
       description,
       reward,
-      type: 'manual',
+      type: 'manual_quest',
     };
 
     await questService.createQuest(questDetails);

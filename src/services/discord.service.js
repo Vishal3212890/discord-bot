@@ -1,60 +1,59 @@
-class DiscordService {
-  constructor(client) {
-    this.client = client;
-  }
+exports.countMessages = async (interaction) => {
+  const guildId = interaction.message.guildId;
+  const discordId = interaction.user.id;
+  const guild = interaction.client.guilds.cache.get(guildId);
+  const channels = guild.channels.cache;
+  const channelsWithMessages = channels.filter((ch) => ch.messages);
+  const messagesInChannels = await Promise.all(
+    channelsWithMessages.map((ch) => ch.messages.fetch())
+  );
 
-  async countMessages(guildId, userId) {
-    const guild = this.client.guilds.cache.get(guildId);
-    const channels = guild.channels.cache;
-    const channelsWithMsgs = channels.filter((ch) => ch.messages);
-    const msgsInEachChannel = await Promise.all(
-      channelsWithMsgs.map((ch) => ch.messages.fetch())
-    );
+  const set = new Set();
 
-    let count = 0;
+  const matches = (message) =>
+    message.content &&
+    message.author.id == discordId &&
+    message.content.split(' ').length > 1;
 
-    msgsInEachChannel.forEach((msgs) =>
-      msgs.forEach((msg) => {
-        if (msg.author.id == userId) count++;
-      })
-    );
-
-    return count;
-  }
-
-  async countInvitations(guildId, userId) {
-    const guild = this.client.guilds.cache.get(guildId);
-    let count = 0;
-
-    //guild.fetchInvites()
-    const invites = await guild.invites.fetch();
-    invites.forEach((invite) => {
-      if (invite.inviterId == userId) count = count + 1;
+  messagesInChannels.forEach((messages) => {
+    messages.forEach((message) => {
+      if (matches(message)) {
+        set.add(message.content);
+      }
     });
+  });
 
-    // console.log(count);
-    return count;
-  }
-  async addPointToReactions(userId) {
-    const channel = this.client.channels.cache.get("1071333524273111083");
-    const messages = await channel.messages.fetch();
-    // console.log(messages);
-    await messages.forEach(async (message) => {
-      message.reactions.cache.forEach(async (reaction) => {
-        const users = await reaction.users.fetch();
-        users.forEach((usr) => {
-          console.log(usr.id, userId);
-          if (!(usr.id == userId)) {
-            console.log(false);
-            return false;
-          } else {
-            console.log(true);
-          }
-        });
+  return set.size;
+};
+
+exports.countInvites = async (interaction) => {
+  const guildId = interaction.message.guildId;
+  const discordId = interaction.user.id;
+  const guild = interaction.client.guilds.cache.get(guildId);
+  const invites = await guild.invites.fetch();
+  return invites.reduce(
+    (count, invite) => (invite.inviterId == discordId ? count + 1 : count),
+    0
+  );
+};
+
+exports.addPointToReactions = async (userId) => {
+  const channel = this.client.channels.cache.get('1071333524273111083');
+  const messages = await channel.messages.fetch();
+  // console.log(messages);
+  await messages.forEach(async (message) => {
+    message.reactions.cache.forEach(async (reaction) => {
+      const users = await reaction.users.fetch();
+      users.forEach((usr) => {
+        console.log(usr.id, userId);
+        if (!(usr.id == userId)) {
+          console.log(false);
+          return false;
+        } else {
+          console.log(true);
+        }
       });
     });
-    console.log("WORKING");
-  }
-}
-
-module.exports = DiscordService;
+  });
+  console.log('WORKING');
+};

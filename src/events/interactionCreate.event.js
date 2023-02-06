@@ -5,6 +5,11 @@ module.exports = async (interaction) => {
   const user = await userService.getUserByDiscordId(discordId);
   if (!user) await userService.createUser({ discordId });
 
+  const getComponent = (interaction, components) => {
+    const customId = Array.from(components.keys()).find(k => new RegExp(k).test(interaction.customId));
+    return components.get(customId);
+  }
+
   if (interaction.isChatInputCommand()) {
     const command = interaction.client.commands.get(interaction.commandName);
 
@@ -27,7 +32,10 @@ module.exports = async (interaction) => {
   }
 
   if (interaction.isButton()) {
-    const button = interaction.client.buttons.get(interaction.customId);
+    // const { buttons } = interaction.client;
+    // const customId = Array.from(buttons.keys()).find(k => new RegExp(k).test(interaction.customId));
+    // const button = buttons.get(customId);
+    const button = getComponent(interaction, interaction.client.buttons);
 
     if (!button) {
       console.error(`No modal matching ${interaction.customId} was found.`);
@@ -75,9 +83,8 @@ module.exports = async (interaction) => {
       await selectMenu.execute(interaction);
     } catch (error) {
       console.error(error);
-      await interaction.reply({
+      await interaction.editReply({
         content: 'There was an error processing the interaction!',
-        ephemeral: true,
       });
     }
   }

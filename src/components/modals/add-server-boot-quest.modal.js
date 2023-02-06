@@ -28,11 +28,11 @@ module.exports = {
       name,
       description,
       reward,
-      type: 'manual',
+      type: 'boost_the_server',
     };
 
     await questService.createQuest(questDetails);
 
-    await interaction.editReply('Manual Quest Created');
+    await interaction.editReply('Automated Quest Created');
   },
 };

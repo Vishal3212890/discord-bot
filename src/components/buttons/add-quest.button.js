@@ -1,5 +1,4 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
-const addManualQuestModal = require('../modals/add-manual-quest.modal');
 const addQuestSelectMenu = require('../selectMenus/add-quest.selectMenu');
 
 module.exports = {
