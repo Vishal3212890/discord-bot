@@ -1,14 +1,14 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
 const userService = require('../../services/user.service');
 const twitterService = require('../../services/twitter.service');
-const twitterActionRewardRaidService = require('../../services/twitterActionRewardRaid.service');
+const twitterRaidService = require('../../services/twitterRaid.service');
 const twitterUtil = require('../utils/twitter.util');
 
 module.exports = {
   data: new ButtonBuilder()
     .setCustomId('claim-like-rewards')
     .setLabel('Claim Like Rewards')
-    .setStyle(ButtonStyle.Primary),
+    .setStyle(ButtonStyle.Success),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
 
@@ -20,20 +20,20 @@ module.exports = {
       return await twitterUtil.handleTwitterAuth(interaction);
     }
 
-    const twitterActionRewardRaid =
-      await twitterActionRewardRaidService.getRaidByDiscordMessageId(messageId);
+    const twitterRaid =
+      await twitterRaidService.getRaidByDiscordMessageId(messageId);
 
     const userLikedTweet = await twitterService.userLikedTweet(
       user.twitterId,
-      twitterActionRewardRaid.tweetId
+      twitterRaid.tweetId
     );
 
     if (!userLikedTweet) return await interaction.editReply('Tweet Not Liked');
 
-    const result = await twitterActionRewardRaidService.claimLikeReward(
+    const result = await twitterRaidService.claimLikeReward(
       user._id,
-      twitterActionRewardRaid._id,
-      twitterActionRewardRaid.reward
+      twitterRaid._id,
+      twitterRaid.reward
     );
     
     if (result) await interaction.editReply('Like reward successfully claimed');

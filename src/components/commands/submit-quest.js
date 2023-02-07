@@ -30,7 +30,7 @@ module.exports = {
     const questName = interaction.options._hoistedOptions[0].value.trim();
     const imageUrl = interaction.options._hoistedOptions[1].attachment.url;
 
-    const quest = await questService.getQuest({ name: questName });
+    const quest = await questService.getQuest({ name: questName, type: 'manual_quest' });
     if (!quest) {
       await interaction.editReply(`Quest ${inlineCode(questName)} Not Found`);
       return;

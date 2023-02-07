@@ -1,7 +1,7 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
 const userService = require('../../services/user.service');
 const twitterService = require('../../services/twitter.service');
-const twitterActionRewardRaidService = require('../../services/twitterActionRewardRaid.service');
+const twitterRaidService = require('../../services/twitterRaid.service');
 const twitterUtil = require('../utils/twitter.util');
 
 module.exports = {
@@ -20,20 +20,19 @@ module.exports = {
       return await twitterUtil.handleTwitterAuth(interaction);
     }
 
-    const twitterActionRewardRaid =
-      await twitterActionRewardRaidService.getRaidByDiscordMessageId(messageId);
+    const twitterRaid = await twitterRaidService.getRaidByDiscordMessageId(messageId);
 
     const userRetweetedTweet = await twitterService.userRetweetedTweet(
       user.twitterId,
-      twitterActionRewardRaid.tweetId
+      twitterRaid.tweetId
     );
 
     if (!userRetweetedTweet) return await interaction.editReply('Tweet Not Retweeted');
 
-    const result = await twitterActionRewardRaidService.claimRetweetReward(
+    const result = await twitterRaidService.claimRetweetReward(
       user._id,
-      twitterActionRewardRaid._id,
-      twitterActionRewardRaid.reward
+      twitterRaid._id,
+      twitterRaid.reward
     );
 
     if (result)

@@ -20,16 +20,16 @@ const schema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  channelId: {
+    type: String,
+    required: true,
+  },
 });
 
 schema.virtual('tweetId').get(function () {
   return path.basename(url.parse(this.tweetUrl).pathname);
 });
 
-const TwitterActionRewardRaid = mongoose.model(
-  'TwitterActionRewardRaid',
-  schema,
-  'twitter_action_reward_raids'
-);
+const TwitterRaid = mongoose.model('TwitterRaid', schema, 'twitter_raids');
 
-module.exports = TwitterActionRewardRaid;
+module.exports = TwitterRaid;

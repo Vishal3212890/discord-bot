@@ -6,9 +6,9 @@ const schema = mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  twitterActionRewardRaid: {
+  twitterRaid: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'TwitterActionRewardRaid',
+    ref: 'TwitterRaid',
     required: true,
   },
   claimedLikeReward: {
@@ -25,10 +25,6 @@ const schema = mongoose.Schema({
   },
 });
 
-const UserTwitterActionRewardRaid = mongoose.model(
-  'UserTwitterActionRewardRaid',
-  schema,
-  'users_twitter_action_reward_raids'
-);
+const UserTwitterRaid = mongoose.model('UserTwitterRaid', schema, 'users_twitter_raids');
 
-module.exports = UserTwitterActionRewardRaid;
+module.exports = UserTwitterRaid;

@@ -1,14 +1,14 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
 const userService = require('../../services/user.service');
 const twitterService = require('../../services/twitter.service');
-const twitterActionRewardRaidService = require('../../services/twitterActionRewardRaid.service');
+const twitterRaidService = require('../../services/twitterRaid.service');
 const twitterUtil = require('../utils/twitter.util');
 
 module.exports = {
   data: new ButtonBuilder()
     .setCustomId('claim-comment-rewards')
     .setLabel('Claim Comment Rewards')
-    .setStyle(ButtonStyle.Success),
+    .setStyle(ButtonStyle.Primary),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
 
@@ -20,21 +20,21 @@ module.exports = {
       return await twitterUtil.handleTwitterAuth(interaction);
     }
 
-    const twitterActionRewardRaid =
-      await twitterActionRewardRaidService.getRaidByDiscordMessageId(messageId);
+    const twitterRaid =
+      await twitterRaidService.getRaidByDiscordMessageId(messageId);
 
     const userCommentedOnTweet = await twitterService.userCommentedOnTweet(
       user.twitterId,
-      twitterActionRewardRaid.tweetId,
-      twitterActionRewardRaid.requiredCommentText
+      twitterRaid.tweetId,
+      twitterRaid.requiredCommentText
     );
 
     if (!userCommentedOnTweet) return await interaction.editReply('Tweet not commented with required text');
 
-    const result = await twitterActionRewardRaidService.claimCommentReward(
+    const result = await twitterRaidService.claimCommentReward(
       user._id,
-      twitterActionRewardRaid._id,
-      twitterActionRewardRaid.reward
+      twitterRaid._id,
+      twitterRaid.reward
     );
     
     if (result) await interaction.editReply('Comment reward successfully claimed');

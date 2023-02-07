@@ -25,7 +25,7 @@ module.exports = {
 
     const customId = customIdPrefix + id.toString();
 
-    return this.data.setCustomId(customId).addComponents(...actionsRows);
+    return this.data.setCustomId(customId).setComponents(...actionsRows);
   },
 
   async execute(interaction) {
