@@ -32,9 +32,6 @@ module.exports = async (interaction) => {
   }
 
   if (interaction.isButton()) {
-    // const { buttons } = interaction.client;
-    // const customId = Array.from(buttons.keys()).find(k => new RegExp(k).test(interaction.customId));
-    // const button = buttons.get(customId);
     const button = getComponent(interaction, interaction.client.buttons);
 
     if (!button) {
@@ -45,12 +42,11 @@ module.exports = async (interaction) => {
     try {
       await button.execute(interaction);
     } catch (error) {
-      console.log(error)
       console.error(error);
-      await interaction.reply({
-        content: 'Some error occurred!',
-        ephemeral: true,
-      });
+      const msg = 'Some error occurred!';
+      interaction.deferred
+        ? await interaction.editReply(msg)
+        : await interaction.reply(msg, { ephemeral: true });
     }
   }
 

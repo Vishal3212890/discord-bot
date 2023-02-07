@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const questService = require('../../services/quest.service');
-const claimRewardButton = require('../buttons/claim-reward.button');
+const claimQuestRewardButton = require('../buttons/claim-quest-reward.button');
 const automatedQuestDetailsEmbed = require('../embeds/automated-quest-details.embed');
 
 const manualQuestDetailsEmbed = require('../embeds/manual-quest-details.embed');
@@ -29,7 +29,7 @@ module.exports = {
       await interaction.editReply({
         embeds: [automatedQuestDetailsEmbed(name, description, reward)],
         components: [
-          new ActionRowBuilder().setComponents(claimRewardButton.render(questId)),
+          new ActionRowBuilder().setComponents(claimQuestRewardButton.render(questId)),
         ],
       });
     }

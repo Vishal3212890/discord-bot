@@ -3,12 +3,12 @@ const discordService = require('../../services/discord.service');
 const questService = require('../../services/quest.service');
 const userService = require('../../services/user.service');
 
-const customIdPrefix = 'claim-reward-';
+const customIdPrefix = 'claim-quest-reward-';
 
 module.exports = {
   data: new ButtonBuilder()
     .setCustomId(customIdPrefix + '*')
-    .setLabel('Claim Reward')
+    .setLabel('Claim Quest Reward')
     .setStyle(ButtonStyle.Primary),
 
   render(id) {
@@ -36,28 +36,40 @@ module.exports = {
     switch (quest.type) {
       case 'reach_n_messages':
         const messageCount = await discordService.countMessages(interaction);
-        if (messageCount < quest.numberOfMessages)
-          return await interaction.editReply('Not Enough Messages');
-        await questService.claimQuestReward(user._id, quest._id);
+        if (messageCount < quest.numberOfMessages) {
+          await interaction.editReply('Not Enough Messages');
+          return;
+        }
         break;
-
       case 'invite_n_people':
         const inviteCount = await discordService.countInvites(interaction);
-        if (inviteCount < quest.numberOfInvites) 
-          return await interaction.editReply('Not Enough Invites');
-        await questService.claimQuestReward(user._id, quest._id);
+        if (inviteCount < quest.numberOfInvites) {
+          await interaction.editReply('Not Enough Invites');
+          return;
+        }
         break;
-
       case 'add_reactions_in_announcement':
+        const addedReactionsInAnnouncement = await discordService.addedReactionsInAnnouncement(interaction);
+        if (!addedReactionsInAnnouncement) {
+          await interaction.editReply('Not Enough Reactions');
+          return;
+        }
         break;
-
       case 'boost_the_server':
+        const boostedServer = await discordService.boostedServer(interaction);
+        if (!boostedServer) {
+          await interaction.editReply('Server Not Boosted');
+          return;
+        }
         break;
-        
       default:
-        return await interaction.editReply('Quest Type Not Supported');
+        await interaction.editReply('Quest Type Not Supported');
+        return;
     }
 
-    await interaction.editReply('Reward Claimed');
+    // Claim reward
+    await questService.claimQuestReward(user._id, quest._id);
+
+    await interaction.editReply('Quest Reward Claimed');
   },
 };

@@ -1,3 +1,5 @@
+const { DISCORD_ANNOUNCEMENTS_CHANNEL_ID } = process.env;
+
 exports.countMessages = async (interaction) => {
   const guildId = interaction.message.guildId;
   const discordId = interaction.user.id;
@@ -37,23 +39,33 @@ exports.countInvites = async (interaction) => {
   );
 };
 
-exports.addPointToReactions = async (userId) => {
-  const channel = this.client.channels.cache.get('1071333524273111083');
+exports.addedReactionsInAnnouncement = async (interaction) => {
+  const discordId = interaction.user.id;
+
+  const channels = interaction.client.channels.cache;
+  const channel = channels.get(DISCORD_ANNOUNCEMENTS_CHANNEL_ID);
   const messages = await channel.messages.fetch();
-  // console.log(messages);
-  await messages.forEach(async (message) => {
-    message.reactions.cache.forEach(async (reaction) => {
+
+  const lastFiveMessages = Array.from(messages.values()).slice(0, 5);
+
+  for (const message of lastFiveMessages) {
+    let reacted = false;
+    const reactions = message.reactions.cache.values();
+    for (const reaction of reactions) {
       const users = await reaction.users.fetch();
-      users.forEach((usr) => {
-        console.log(usr.id, userId);
-        if (!(usr.id == userId)) {
-          console.log(false);
-          return false;
-        } else {
-          console.log(true);
-        }
-      });
-    });
-  });
-  console.log('WORKING');
+      if (users.has(discordId)) {
+        reacted = true;
+        break;
+      }
+    }
+    if (!reacted) return false;
+  }
+  
+  return true;
+};
+
+exports.boostedServer = async (interaction) => {
+  return interaction.member.roles.cache.find(
+    (role) => role.name === 'Nitro Booster'
+  );
 };
