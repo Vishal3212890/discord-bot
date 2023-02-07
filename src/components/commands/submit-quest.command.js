@@ -27,8 +27,8 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
 
     const discordId = interaction.user.id;
-    const questName = interaction.options._hoistedOptions[0].value.trim();
-    const imageUrl = interaction.options._hoistedOptions[1].attachment.url;
+    const questName = interaction.options.getString('quest').trim();
+    const imageUrl = interaction.options.getAttachment('image').url;
 
     const quest = await questService.getQuest({ name: questName, type: 'manual_quest' });
     if (!quest) {

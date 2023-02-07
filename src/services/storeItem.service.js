@@ -1,12 +1,14 @@
 const StoreItem = require('../models/StoreItem');
 
-exports.createStoreItem = (storeDetails) => new StoreItem(storeDetails).save();
+exports.createItem = (details) => new StoreItem(details).save();
 
-exports.getStoreItemById = (id) => StoreItem.findById(id);
+exports.itemExists = (filter) => StoreItem.exists(filter); 
 
-exports.getAllStoreItems = () => StoreItem.find();
+exports.getItemById = (id) => StoreItem.findById(id);
 
-exports.updateStoreItem = (id, storeDetails) =>
-  StoreItem.findByIdAndUpdate(id, storeDetails);
+exports.getAllItems = () => StoreItem.find();
 
-exports.deleteStoreItem = (id) => StoreItem.findByIdAndDelete(id);
+exports.updateItem = (id, details) =>
+  StoreItem.findByIdAndUpdate(id, details);
+
+exports.deleteItem = (id) => StoreItem.findByIdAndDelete(id);

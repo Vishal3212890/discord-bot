@@ -2,7 +2,6 @@ const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const questService = require('../../services/quest.service');
 const claimQuestRewardButton = require('../buttons/claim-quest-reward.button');
 const automatedQuestDetailsEmbed = require('../embeds/automated-quest-details.embed');
-
 const manualQuestDetailsEmbed = require('../embeds/manual-quest-details.embed');
 
 module.exports = {

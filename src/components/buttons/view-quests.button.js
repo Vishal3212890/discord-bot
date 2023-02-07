@@ -7,6 +7,7 @@ module.exports = {
     .setCustomId('view-quests')
     .setLabel('View Quests')
     .setStyle(ButtonStyle.Success),
+    
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
     

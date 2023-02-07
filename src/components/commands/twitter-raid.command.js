@@ -13,7 +13,7 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
-    const channelId = interaction.options._hoistedOptions[0].channel.id;
+    const channelId = interaction.options.getChannel('channel').id;
     await interaction.showModal(createTwitterRaidModal.render(channelId));
   },
 };

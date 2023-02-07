@@ -1,21 +1,27 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose } = require('mongoose');
 
 const schema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
+  },
+  image: {
+    type: String,
   },
   description: {
     type: String,
-    required: true,
   },
-  role: {
+  roleId: {
     type: String,
     required: true,
   },
   price: {
     type: Number,
-    default: null,
+    required: true,
+  },
+  stock: {
+    type: Number,
   },
 });
 
