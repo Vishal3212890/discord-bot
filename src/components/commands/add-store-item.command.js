@@ -14,7 +14,7 @@ module.exports = {
     .addRoleOption((option) =>
       option
         .setName('role')
-        .setDescription('Role  that will be assigned')
+        .setDescription('Role that will be assigned')
         .setRequired(true)
     )
     .addIntegerOption((option) =>
@@ -27,7 +27,7 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true});
+    await interaction.deferReply({ ephemeral: true });
 
     const name = interaction.options.getString('name');
     const roleId = interaction.options.getRole('role').id;

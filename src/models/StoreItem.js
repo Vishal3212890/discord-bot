@@ -6,22 +6,21 @@ const schema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  image: {
-    type: String,
+  price: {
+    type: Number,
+    required: true,
   },
   description: {
     type: String,
+    default: null,
   },
   roleId: {
     type: String,
     required: true,
   },
-  price: {
-    type: Number,
-    required: true,
-  },
   stock: {
     type: Number,
+    default: null,
   },
 });
 

@@ -1,5 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const storeItemService = require('../../services/storeItem.service');
+const buyStoreItemButton = require('../buttons/buy-store-item.button');
 const storeItemDetailsEmbed = require('../embeds/store-item-details.embed');
 
 module.exports = {
@@ -23,6 +24,9 @@ module.exports = {
 
     await interaction.editReply({
       embeds: [storeItemDetailsEmbed(item)],
+      components: [
+        new ActionRowBuilder().setComponents(buyStoreItemButton.render(itemId)),
+      ],
     });
   },
 };

@@ -6,6 +6,8 @@ exports.itemExists = (filter) => StoreItem.exists(filter);
 
 exports.getItemById = (id) => StoreItem.findById(id);
 
+exports.getItem = (filter) => StoreItem.findOne(filter);
+
 exports.getAllItems = () => StoreItem.find();
 
 exports.updateItem = (id, details) =>
