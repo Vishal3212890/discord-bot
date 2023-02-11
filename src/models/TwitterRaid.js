@@ -19,6 +19,7 @@ const schema = mongoose.Schema({
   reward: {
     type: Number,
     required: true,
+    min: 0
   },
   channelId: {
     type: String,

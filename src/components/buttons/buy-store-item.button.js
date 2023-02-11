@@ -1,12 +1,15 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
 const storeItemService = require('../../services/storeItem.service');
 const userService = require('../../services/user.service');
+const storeItemApplicationMessage = require('../messages/store-item-application.message');
 
-const customIdPrefix = 'buy-store-item-*';
+const { DISCORD_STORE_APPLICATIONS_ID } = process.env;
+
+const customIdPrefix = 'buy-store-item-';
 
 module.exports = {
   data: new ButtonBuilder()
-    .setCustomId('buy-store-item')
+    .setCustomId(customIdPrefix + '*')
     .setLabel('Buy Now')
     .setStyle(ButtonStyle.Success),
 
@@ -17,7 +20,7 @@ module.exports = {
   getId(interaction) {
     return interaction.customId.substring(customIdPrefix.length);
   },
-  
+
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
 
@@ -26,21 +29,40 @@ module.exports = {
 
     const storeItem = await storeItemService.getItemById(id);
     if (!storeItem) {
-      await interaction.editReply('Item not found');
-      return;
+      return await interaction.editReply('Item not found');
+    }
+
+    if (interaction.member.roles.cache.has(storeItem.roleId)) {
+      return await interaction.editReply('You already have this Item');
     }
 
     if (storeItem.stock === 0) {
-      await interaction.editReply('Item out of stock!');
-      return;
+      return await interaction.editReply('Item out of stock!');
     }
 
     const user = await userService.getUserByDiscordId(discordId);
     if (user.claimedBalance < storeItem.price) {
-      await interaction.editReply('Not Enough Claimed Balance!');
-      return;
+      return await interaction.editReply('Not Enough Claimed Balance!');
     }
 
-    await interaction.editReply('Processing...');
+    await userService.decreaseClaimedBalance(user._id, storeItem.price);
+    await storeItemService.decreaseStock(storeItem._id);
+
+    try {
+      const role = interaction.guild.roles.cache.get(storeItem.roleId);
+      await interaction.member.roles.add(role);
+    } catch (error) {
+      await userService.increaseClaimedBalance(user._id, storeItem.price);
+      await storeItemService.increaseStock(storeItem._id);
+      return await interaction.editReply('Unable to buy Item');
+    }
+
+    const storeItemApplication = await storeItemService.createStoreItemApplication(user._id, storeItem._id);
+    const channels = interaction.client.channels.cache;
+    const storeApplicationChannel = channels.get(DISCORD_STORE_APPLICATIONS_ID);
+
+    await storeApplicationChannel.send(storeItemApplicationMessage(storeItemApplication));
+
+    await interaction.editReply('Successfully Bought Item');
   },
 };

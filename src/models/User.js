@@ -26,11 +26,6 @@ const userSchema = mongoose.Schema({
   twitterAccessTokenSecret: String,
 });
 
-userSchema.methods.increaseUnclaimedBalance = function (amount) {
-  this.set({ unclaimedBalance: this.unclaimedBalance + amount });
-  return this.save();
-};
-
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

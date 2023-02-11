@@ -1,4 +1,4 @@
-const { ButtonStyle, ButtonBuilder } = require("discord.js");
+const { ButtonStyle, ButtonBuilder } = require('discord.js');
 const questService = require('../../services/quest.service');
 
 const customIdPrefix = 'accept-quest-application-';
@@ -13,10 +13,14 @@ module.exports = {
     return this.data.setCustomId(customIdPrefix + id.toString());
   },
 
-  async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true});
+  getId(interaction) {
+    return interaction.customId.substring(customIdPrefix.length);
+  },
 
-    const questApplicationId = interaction.customId.substring(customIdPrefix.length);
+  async execute(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+
+    const questApplicationId = this.getId(interaction);
 
     await questService.acceptQuestApplication(questApplicationId);
 

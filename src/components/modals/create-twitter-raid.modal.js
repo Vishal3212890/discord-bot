@@ -42,17 +42,19 @@ module.exports = {
     const channelId = this.getId(interaction);
     const channel = interaction.client.channels.cache.get(channelId);
 
-    const sentMessage = await channel.send(
-      twitterRaidMessage(tweetUrl, requiredCommentText, reward)
-    );
-
     const twitterRaid = await twitterRaidService.createRaid({
-      discordMessageId: sentMessage.id,
       tweetUrl,
       requiredCommentText,
       reward,
       channelId,
     });
+
+    const sentMessage = await channel.send(
+      twitterRaidMessage(tweetUrl, requiredCommentText, reward)
+    );
+
+    twitterRaid.discordMessageId = sentMessage.id;
+    await twitterRaid.save();
 
     await interaction.editReply(
       manageTwitterRaidMessage(

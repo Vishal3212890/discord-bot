@@ -13,3 +13,25 @@ exports.updateUserByDiscordId = (discordId, userDetails) =>
 
 exports.increaseUnclaimedBalance = (id, amount) =>
   User.findByIdAndUpdate(id, { $inc: { unclaimedBalance: amount } });
+
+exports.decreaseUnclaimedBalance = (id, amount) =>
+  User.findByIdAndUpdate(id, { $inc: { unclaimedBalance: -amount } });
+
+exports.increaseClaimedBalance = (id, amount) =>
+  User.findByIdAndUpdate(id, { $inc: { claimedBalance: amount } });
+
+exports.decreaseClaimedBalance = (id, amount) =>
+  User.findByIdAndUpdate(id, { $inc: { claimedBalance: -amount } });
+
+exports.claimUnclaimedBalance = async (id, claimRate) => {
+  const user = await this.getUserById(id);
+  if (!user) throw new Error('User not found');
+
+  const unclaimedBalance = user.unclaimedBalance;
+  user.unclaimedBalance = 0;
+  user.claimedBalance += Math.round((unclaimedBalance * claimRate) / 100);
+
+  await user.save();
+
+  return user;
+};

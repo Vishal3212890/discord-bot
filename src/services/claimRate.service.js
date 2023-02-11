@@ -14,3 +14,15 @@ exports.updateClaimRate = (id, details) =>
   ClaimRate.findByIdAndUpdate(id, details);
 
 exports.deleteClaimRate = (id) => ClaimRate.findByIdAndDelete(id);
+
+exports.getHighestClaimRate = async (roleIds) => {
+  const claimRates = await this.getAllClaimRates().sort({ rate: 'desc' });
+  
+  for (const claimRate of claimRates) {    
+    if (roleIds.includes(claimRate.roleId)) {
+      return claimRate.rate;
+    }
+  }
+
+  return 50;
+};

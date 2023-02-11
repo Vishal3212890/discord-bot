@@ -7,8 +7,9 @@ module.exports = async (interaction) => {
 
   const getComponent = (components) => {
     const customId = Array.from(components.keys()).find((k) =>
-      new RegExp(k).test(interaction.customId)
+      new RegExp('^' + k).test(interaction.customId)
     );
+    console.log(interaction.customId, customId);
     return components.get(customId);
   };
 

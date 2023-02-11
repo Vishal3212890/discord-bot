@@ -55,15 +55,14 @@ exports.acceptQuestApplication = async (applicationId) => {
   if (!questApplication) throw new Error('Quest Application not found');
 
   const { user: userId, quest: questId } = questApplication;
-  
   await this.claimQuestReward(userId, questId);
- 
+  
   await questApplication.delete();
 };
 
 exports.rejectQuestApplication = async (applicationId) => {
   const questApplication = await this.getQuestApplicationById(applicationId);
   if (!questApplication) throw new Error('Quest Application not found');
-
+  
   await questApplication.delete();
 };

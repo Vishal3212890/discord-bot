@@ -21,6 +21,7 @@ const schema = mongoose.Schema({
   stock: {
     type: Number,
     default: null,
+    min: 0,
   },
 });
 

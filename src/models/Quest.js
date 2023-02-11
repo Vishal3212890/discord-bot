@@ -13,6 +13,7 @@ const schema = mongoose.Schema({
   reward: {
     type: Number,
     required: true,
+    min: 0,
   },
   type: {
     type: String,
