@@ -8,7 +8,7 @@ module.exports = (storeItemApplication) => {
 
   return {
     embeds: [
-      storeItemApplicationEmbed(user.discordId, storeItem),
+      storeItemApplicationEmbed(user, storeItem),
     ],
     components: [
       new ActionRowBuilder().setComponents(

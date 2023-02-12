@@ -7,8 +7,8 @@ module.exports = {
 Details of a Store Item:
 1. ${bold('Name*')}: Name of the Item.
 2. ${bold('Price*')}: Price of the Item.
-3. ${bold('Description')}: Description of the Item.
-4. ${bold('Role*')}: Role that will be assigned.
+3. ${bold('Role*')}: Role that will be assigned.
+4. ${bold('Description')}: Description of the Item.
 5. ${bold('Stock')}: Stock of the Item. (default Infinite)
 
 ${bold('Create Store Item')}:
