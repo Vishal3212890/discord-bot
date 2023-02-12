@@ -11,6 +11,20 @@ exports.getQuest = (filter) => Quest.findOne(filter);
 
 exports.getAllQuests = () => Quest.find();
 
+exports.getCompletedQuests = async (userId) => {
+  const userQuests = await UserQuest.find({ user: userId });
+  const completedQuestIds = userQuests.map((q) => q.quest);
+  const completedQuests = await Quest.find({ _id: { $in: completedQuestIds } });
+  return completedQuests;
+};
+
+exports.getPendingQuests = async (userId) => {
+  const completedQuests = await this.getCompletedQuests(userId);
+  const completedQuestsIds = completedQuests.map((q) => q._id);
+  const pendingQuests = await Quest.find({ _id: { $nin: completedQuestsIds } });
+  return pendingQuests;
+};
+
 exports.updateQuest = (id, questDetails) =>
   Quest.findByIdAndUpdate(id, questDetails);
 
