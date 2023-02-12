@@ -55,23 +55,6 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName('role')
-        .setDescription('Edit Item Role')
-        .addStringOption((option) =>
-          option
-            .setName('item')
-            .setDescription('Item Name')
-            .setRequired(true)
-        )
-        .addRoleOption((option) =>
-          option
-            .setName('role')
-            .setDescription('Role of the Item')
-            .setRequired(true)
-        )
-    )
-    .addSubcommand((subcommand) =>
-      subcommand
         .setName('stock')
         .setDescription('Edit Item Stock')
         .addStringOption((option) =>
@@ -107,9 +90,6 @@ module.exports = {
         break;
       case 'description':
         item.description = interaction.options.getString('description');
-        break;
-      case 'role':
-        item.roleId = interaction.options.getRole('role').id;
         break;
       case 'stock':
         item.stock = interaction.options.getInteger('stock');

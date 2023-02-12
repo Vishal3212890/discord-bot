@@ -11,12 +11,6 @@ module.exports = {
         .setDescription('Name of the Item')
         .setRequired(true)
     )
-    .addRoleOption((option) =>
-      option
-        .setName('role')
-        .setDescription('Role that will be assigned')
-        .setRequired(true)
-    )
     .addIntegerOption((option) =>
       option
         .setName('price')
@@ -30,16 +24,19 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
 
     const name = interaction.options.getString('name');
-    const roleId = interaction.options.getRole('role').id;
     const price = interaction.options.getInteger('price');
 
     const itemExists = await storeItemService.itemExists({ name });
     if (itemExists) {
-      return interaction.editReply('Item Already Exists');
+      return await interaction.editReply('Item Already Exists');
     }
 
-    await storeItemService.createItem({ name, roleId, price });
+    const role = await interaction.guild.roles.create({
+      name: 'SI - ' + name,
+    });
 
-    interaction.editReply('New Item Added');
+    await storeItemService.createItem({ name, roleId: role.id, price });
+
+    await interaction.editReply('New Item Added');
   },
 };

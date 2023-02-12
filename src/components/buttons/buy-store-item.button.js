@@ -63,6 +63,6 @@ module.exports = {
 
     await storeApplicationChannel.send(storeItemApplicationMessage(storeItemApplication));
 
-    await interaction.editReply('Successfully Bought Item');
+    await interaction.editReply('Buy Request Initiated for this item');
   },
 };

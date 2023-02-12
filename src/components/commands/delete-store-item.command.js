@@ -22,6 +22,8 @@ module.exports = {
       return await interaction.editReply('Item Not Found');
     }
 
+    await interaction.guild.roles.delete(item.roleId);
+
     await item.delete();
 
     interaction.editReply('Item Deleted');

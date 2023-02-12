@@ -7,7 +7,7 @@ const customIdPrefix = 'buy-store-application-';
 module.exports = {
   data: new ButtonBuilder()
     .setCustomId(customIdPrefix + '*')
-    .setLabel('Accept')
+    .setLabel('Complete')
     .setStyle(ButtonStyle.Success),
 
   render(id) {
@@ -23,16 +23,17 @@ module.exports = {
 
     const applicationId = this.getId(interaction);
     const storeItemApplication = await storeItemService.getStoreItemApplicationById(applicationId);
-    await storeItemApplication.populate('user storeItem');
+    const { user, storeItem } = await storeItemApplication.populate('user storeItem');
 
-    const { user, storeItem } = storeItemApplication;
+    const role = interaction.guild.roles.cache.get(storeItem.roleId);
+    await interaction.member.roles.remove(role);
+    
+    await interaction.message.delete();
+    
+    await storeItemApplication.delete();
 
     await logger.logStoreApplicationAcceptedLog(interaction.client, user, storeItem);
 
-    await interaction.message.delete();
-
-    await storeItemApplication.delete();
-
-    interaction.editReply('Buy Request Accepted');
+    interaction.editReply('Buy Request Completed');
   },
 };
