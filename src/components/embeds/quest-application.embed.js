@@ -1,4 +1,5 @@
 const { userMention, bold } = require("discord.js");
+const footerEmbed = require("./footer.embed");
 
 module.exports = (userDiscordId, questName, imageUrl) => {
   return {
@@ -8,6 +9,7 @@ module.exports = (userDiscordId, questName, imageUrl) => {
     image: {
       url: imageUrl
     },
-    timestamp: new Date()
+    timestamp: new Date(),
+    footer: footerEmbed
   };
 };

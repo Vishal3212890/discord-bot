@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema({
   discordMessageId: {
     type: String,
-    required: true,
     unique: true,
   },
   tweetUrl: {

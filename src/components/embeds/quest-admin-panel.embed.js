@@ -1,4 +1,5 @@
 const { inlineCode, bold } = require("discord.js");
+const footerEmbed = require("./footer.embed");
 
 module.exports = {
   color: 0x1547d1,
@@ -15,4 +16,5 @@ Available Operations:
 1. ${bold('Add Quest')} button is used to add a new quest.
 2. ${bold('Edit Quest')} button is used to edit a existing quest.
 3. ${bold('Delete Quest')} button is used to delete a quest.`,
+  footer: footerEmbed
 };

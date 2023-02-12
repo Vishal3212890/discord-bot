@@ -1,4 +1,5 @@
 const { bold, inlineCode } = require("discord.js");
+const footerEmbed = require("./footer.embed");
 
 module.exports = {
   color: 0x1547d1,
@@ -23,4 +24,5 @@ ${bold('Edit Store Item')}:
 
 ${bold('Delete Store Item')}:
   ${inlineCode('/delete-store-item <name>')} Delete a Store Item.`,
+  footer: footerEmbed
 };

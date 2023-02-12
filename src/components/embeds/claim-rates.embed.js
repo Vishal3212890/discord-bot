@@ -1,4 +1,5 @@
 const { roleMention, inlineCode, bold } = require('discord.js');
+const footerEmbed = require('./footer.embed');
 
 module.exports = (claimRates) => {
   return {
@@ -17,5 +18,6 @@ When claiming an unclaimed balance, members with any of the above roles will be 
 If you have multiple roles, claim rates won't stack. Only the highest one is counted!
 
 A member without any of the above roles will lose ${inlineCode('50%')} of their unclaimed balance when claiming.`,
+    footer: footerEmbed
   };
 };

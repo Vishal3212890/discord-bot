@@ -1,4 +1,5 @@
 const { bold } = require('discord.js');
+const footerEmbed = require('./footer.embed');
 
 module.exports = (name, description, reward) => {
   return {
@@ -10,5 +11,6 @@ ${bold('Description')}: ${description}
 ${bold('Reward')}: ${reward}
 
 Click the ${bold('Claim Reward')} button below to claim your reward`,
+    footer: footerEmbed
   };
 };

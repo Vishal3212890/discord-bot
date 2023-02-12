@@ -1,4 +1,5 @@
 const { userMention, bold, roleMention, italic } = require('discord.js');
+const footerEmbed = require('./footer.embed');
 
 module.exports = (user, storeItem) => {
   const { discordId, walletAddress } = user;
@@ -18,5 +19,6 @@ ${bold('Role Assigned')}: ${roleMention(roleId)}
 
 User wallet address: ${italic(String(walletAddress))}`,
     timestamp: new Date(),
+    footer: footerEmbed
   };
 };
