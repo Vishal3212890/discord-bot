@@ -1,8 +1,7 @@
 const { ButtonBuilder, ButtonStyle, bold } = require('discord.js');
 const claimRateService = require('../../services/claimRate.service');
 const userService = require('../../services/user.service');
-
-const { MINIMUM_CLAIM_AMOUNT } = process.env;
+const settingService = require('../../services/setting.service');
 
 module.exports = {
   data: new ButtonBuilder()
@@ -17,8 +16,9 @@ module.exports = {
 
     const user = await userService.getUserByDiscordId(discordId);
 
-    if (user.unclaimedBalance < MINIMUM_CLAIM_AMOUNT) {
-      return await interaction.editReply(`Minimum claim amount is ${bold(MINIMUM_CLAIM_AMOUNT)}`);
+    const minimumClaimAmount = await settingService.getMinimumClaimAmount()
+    if (user.unclaimedBalance < minimumClaimAmount) {
+      return await interaction.editReply(`Minimum claim amount is ${bold(minimumClaimAmount)}`);
     }
 
     const userRolesIds = Array.from(interaction.member.roles.cache.keys());

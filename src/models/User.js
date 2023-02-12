@@ -20,6 +20,10 @@ const userSchema = mongoose.Schema({
     required: true,
     default: 0,
   },
+  walletAddress: {
+    type: String,
+    default: null,
+  },
   twitterOAuthToken: String,
   twitterOAuthTokenSecret: String,
   twitterAccessToken: String,

@@ -1,8 +1,6 @@
-const db = require('../startup/db');
-const messages = require('../startup/messages');
+const sendMessages = require('../startup/sendMessages');
 
 module.exports = (client) => {
   console.log(`Ready! Logged in as ${client.user.tag}`);
-  messages(client);
-  db();
+  sendMessages(client);
 };

@@ -1,5 +1,6 @@
 const { ButtonStyle, ButtonBuilder } = require('discord.js');
 const questService = require('../../services/quest.service');
+const logger = require('../utils/logger');
 
 const customIdPrefix = 'accept-quest-application-';
 
@@ -22,7 +23,11 @@ module.exports = {
 
     const questApplicationId = this.getId(interaction);
 
+    const { user, quest } = await questService.getQuestApplicationById(questApplicationId).populate('user quest');
+
     await questService.acceptQuestApplication(questApplicationId);
+
+    await logger.logQuestApplicationAcceptedLog(interaction.client, user, quest);
 
     await interaction.message.delete();
 

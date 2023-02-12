@@ -2,6 +2,8 @@ const User = require('../models/User');
 
 exports.createUser = (userDetails) => new User(userDetails).save();
 
+exports.getUser = (filter) => User.findOne(filter);
+
 exports.getUserById = (id) => User.findById(id);
 
 exports.getUserByDiscordId = (discordId) => User.findOne({ discordId });
@@ -10,6 +12,19 @@ exports.getUserByTwitterId = (twitterId) => User.findOne({ twitterId });
 
 exports.updateUserByDiscordId = (discordId, userDetails) =>
   User.updateOne({ discordId }, userDetails);
+
+exports.updateWalletAddress = async (id, address) => {
+  const user = await this.getUserById(id);
+  if (!user) throw new Error('User not found');
+
+  await User.updateOne({ walletAddress: address }, { walletAddress: null });
+
+  user.walletAddress = address;
+
+  await user.save();
+
+  return user;
+};
 
 exports.increaseUnclaimedBalance = (id, amount) =>
   User.findByIdAndUpdate(id, { $inc: { unclaimedBalance: amount } });

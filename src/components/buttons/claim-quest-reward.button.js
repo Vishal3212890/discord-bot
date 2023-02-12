@@ -36,7 +36,6 @@ module.exports = {
     switch (quest.type) {
       case 'reach_n_messages':
         const messageCount = await discordService.countMessages(interaction);
-        console.log(messageCount);
         if (messageCount < quest.numberOfMessages) {
           await interaction.editReply('Not Enough Messages');
           return;

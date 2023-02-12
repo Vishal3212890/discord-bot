@@ -26,8 +26,14 @@ const schema = mongoose.Schema({
     ],
     required: true,
   },
-  numberOfMessages: Number,
-  numberOfInvites: Number,
+  numberOfMessages: {
+    type: Number,
+    min: 0,
+  },
+  numberOfInvites: {
+    type: Number,
+    min: 0,
+  },
 });
 
 const Quest = mongoose.model('Quest', schema);
