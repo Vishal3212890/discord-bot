@@ -1,19 +1,23 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
+const userService = require('../../services/user.service');
 const questService = require('../../services/quest.service');
 const viewQuestSelectMenu = require('../selectMenus/view-quest.selectMenu');
 
 module.exports = {
   data: new ButtonBuilder()
-    .setCustomId('view-quests')
-    .setLabel('View Quests')
-    .setStyle(ButtonStyle.Primary),
+    .setCustomId('pending-quests')
+    .setLabel('Pending Quests')
+    .setStyle(ButtonStyle.Danger),
     
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
+
+    const user = await userService.getUserByDiscordId(interaction.user.id);
+
+    const quests = await questService.getPendingQuests(user._id);
     
-    const quests = await questService.getAllQuests();
     if (quests.length === 0) 
-      return await interaction.editReply('No available quests');
+      return await interaction.editReply('No Pending Quests Found');
 
     const options = quests.map((q) => {
       return { label: q.name, value: q._id.toString() };
