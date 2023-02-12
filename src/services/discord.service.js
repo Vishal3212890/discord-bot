@@ -97,6 +97,6 @@ exports.claimAddReactionsInAnnouncementReward = async (interaction, user, quest)
 
 exports.boostedServer = async (interaction) => {
   return interaction.member.roles.cache.find(
-    (role) => role.name === 'Nitro Booster'
+    (role) => role.name === 'Server Booster'
   );
 };
