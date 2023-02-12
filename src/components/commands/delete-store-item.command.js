@@ -11,7 +11,7 @@ module.exports = {
         .setDescription('Name of the Item')
         .setRequired(true)
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });

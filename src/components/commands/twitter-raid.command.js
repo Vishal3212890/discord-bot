@@ -11,7 +11,7 @@ module.exports = {
         .setDescription('The channel to post raid')
         .setRequired(true)
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
   async execute(interaction) {
     const channelId = interaction.options.getChannel('channel').id;
     await interaction.showModal(createTwitterRaidModal.render(channelId));

@@ -67,7 +67,7 @@ module.exports = {
           option.setName('stock').setDescription('Stock of the Item')
         )
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
