@@ -36,6 +36,11 @@ exports.questRewardClaimed = async (userId, questId) =>
   await UserQuest.exists({ user: userId, quest: questId });
 
 exports.claimQuestReward = async (userId, questId) => {
+  await this.markQuestClaimed(userId, questId);
+  await userService.increaseUnclaimedBalance(userId, quest.reward);
+};
+
+exports.markQuestClaimed = async (userId, questId) => {
   const quest = await Quest.findById(questId);
   if (!quest) throw new Error('Quest not found');
 
@@ -43,8 +48,7 @@ exports.claimQuestReward = async (userId, questId) => {
   if (questRewardClaimed) throw new Error('Quest Reward Already Claimed');
 
   await UserQuest.create({ user: userId, quest: questId });
-  await userService.increaseUnclaimedBalance(userId, quest.reward);
-};
+}
 
 exports.createQuestApplication = async (userId, questId) => {
   const questRewardClaimed = await this.questRewardClaimed(userId, questId);

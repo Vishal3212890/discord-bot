@@ -49,12 +49,11 @@ module.exports = {
         }
         break;
       case 'add_reactions_in_announcement':
-        const addedReactionsInAnnouncement = await discordService.addedReactionsInAnnouncement(interaction);
-        if (!addedReactionsInAnnouncement) {
-          await interaction.editReply('Not Enough Reactions');
-          return;
-        }
-        break;
+        const claimed = await discordService.claimAddReactionsInAnnouncementReward(interaction, user, quest);
+        if (!claimed) 
+          return await interaction.editReply('Not Enough Reactions');
+        else 
+          return await interaction.editReply('Quest Reward Claimed');
       case 'boost_the_server':
         const boostedServer = await discordService.boostedServer(interaction);
         if (!boostedServer) {

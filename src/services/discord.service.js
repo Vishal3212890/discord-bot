@@ -1,3 +1,7 @@
+const UserReaction = require("../models/UserReaction");
+const userService = require('./user.service');
+const questService = require('./quest.service');
+
 const { DISCORD_ANNOUNCEMENTS_CHANNEL_ID } = process.env;
 
 exports.countMessages = async (interaction) => {
@@ -39,7 +43,7 @@ exports.countInvites = async (interaction) => {
   );
 };
 
-exports.addedReactionsInAnnouncement = async (interaction) => {
+exports.claimAddReactionsInAnnouncementReward = async (interaction, user, quest) => {
   const discordId = interaction.user.id;
 
   const channels = interaction.client.channels.cache;
@@ -48,7 +52,20 @@ exports.addedReactionsInAnnouncement = async (interaction) => {
 
   const lastFiveMessages = Array.from(messages.values()).slice(0, 5);
 
+  let claimedAnyReward = false;
+  let reactionCount = 0;
+
   for (const message of lastFiveMessages) {
+    const reactionExists = await UserReaction.exists({
+      discordMessageId: message.id,
+      user: user._id,
+      quest: quest._id,
+    });
+    if (reactionExists) {
+      reactionCount++;
+      continue;
+    };
+
     let reacted = false;
     const reactions = message.reactions.cache.values();
     for (const reaction of reactions) {
@@ -58,10 +75,24 @@ exports.addedReactionsInAnnouncement = async (interaction) => {
         break;
       }
     }
-    if (!reacted) return false;
+
+    if (reacted) {
+      await UserReaction.create({
+        discordMessageId: message.id,
+        user: user._id,
+        quest: quest._id,
+      });
+      await userService.increaseUnclaimedBalance(user._id, quest.reward);
+      claimedAnyReward = true;
+      reactionCount++
+    }
+  }
+
+  if (reactionCount === 5) {
+    await questService.markQuestClaimed(user._id, quest._id);
   }
   
-  return true;
+  return claimedAnyReward;
 };
 
 exports.boostedServer = async (interaction) => {
