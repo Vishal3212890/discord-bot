@@ -84,6 +84,7 @@ module.exports = {
     switch (subcommand) {
       case 'name':
         item.name = interaction.options.getString('name');
+        await interaction.guild.roles.edit(item.roleId, { name: 'SI - ' + item.name });
         break;
       case 'price':
         item.price = interaction.options.getInteger('price');

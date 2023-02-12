@@ -19,11 +19,7 @@ exports.updateWalletAddress = async (id, address) => {
 
   await User.updateOne({ walletAddress: address }, { walletAddress: null });
 
-  user.walletAddress = address;
-
-  await user.save();
-
-  return user;
+  await User.updateOne({ _id: id }, { walletAddress: address });
 };
 
 exports.increaseUnclaimedBalance = (id, amount) =>
