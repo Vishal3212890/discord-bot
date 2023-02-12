@@ -24,5 +24,5 @@ exports.getHighestClaimRate = async (roleIds) => {
     }
   }
 
-  return 50;
+  return 100;
 };

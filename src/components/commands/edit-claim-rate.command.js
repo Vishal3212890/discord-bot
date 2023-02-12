@@ -28,10 +28,10 @@ module.exports = {
 
     const claimRate = await claimRateService.getClaimRate({ roleId });
     if (!claimRate) {
-      return await interaction.editReply('Claim Rate Nor Found');
+      return await interaction.editReply('Claim Rate Not Found');
     }
 
-    await claimRateService.updateClaimRate({ roleId, rate });
+    await claimRateService.updateClaimRate(claimRate._id, { roleId, rate });
 
     await interaction.editReply('Claim Rate Updated');
   },
