@@ -46,7 +46,6 @@ exports.claimNftReward = async (account) => {
     binary: false,
     limit: 100,
     forward: false,
-    date: "160523ddd3404800",
   });
 
   xrplClient.disconnect();
