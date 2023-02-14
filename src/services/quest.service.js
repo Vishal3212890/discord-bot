@@ -37,6 +37,7 @@ exports.questRewardClaimed = async (userId, questId) =>
 
 exports.claimQuestReward = async (userId, questId) => {
   await this.markQuestClaimed(userId, questId);
+  const quest = await this.getQuestById(questId)
   await userService.increaseUnclaimedBalance(userId, quest.reward);
 };
 
